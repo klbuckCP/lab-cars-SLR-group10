@@ -1,0 +1,342 @@
+---
+title: "Lab Cars, Pt 1"
+subtitle: "Single predictor"
+author: "Mian Uddin"
+date: "2018-02-22"
+output: 
+  tufte::tufte_html:
+    tufte_variant: "envisioned"
+    highlight: pygments
+link-citations: yes
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(tufte)
+library(knitr)
+options(
+  htmltools.dir.version = FALSE, # for blogdown
+  show.signif.stars = FALSE,     # for regression output
+  digits = 2
+  )
+knitr::opts_chunk$set(eval = TRUE)
+```
+
+**Due:** 2018-10-19 by 11:59PM
+
+## Introduction
+
+The purpose of this lab activity is to give you a chance to practice what you have learned about regression while getting familiar with the RStudio platform. I am assuming that much of this lab is review with a few new concepts interwoven.
+
+# Packages
+
+In this lab we will work with the `tidyverse` and `broom` packages. We can install and load them with the following:
+
+```{marginfigure}
+When using a library for the first time, you need to run install.packages("package name"). After the package is installed, you can load it using library(package name). For your convenience, commonly used libraries like tidyverse, moderndive, and openintro have been permanently installed in your R image.
+```
+
+```{r eval = TRUE}
+library(tidyverse) 
+library(moderndive)
+```
+
+# Data: Motor Trend Car Road Tests
+
+## Description
+
+The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+The data is a built in data set, meaning that after loading the above packages, it is loaded into your work space as *mtcars*.
+```{r data, eval=TRUE}
+glimpse(mtcars)
+```
+
+## Codebook
+
+| Variable name | Description 
+|:--------|:-------------------------------
+| `mpg` 	| miles/(US) gallon
+| `cyl` 	| number of cylinders
+| `disp` 	| displacement (cu. in)
+| `hp` 		| gross horsepower
+| `drat` 	| rear axle ratio
+| `wt` 		| weight (1000 lbs)
+| `qsec`  | 1/4 mile time
+| `vs`    | engine (0 = v-shaped, 1 = straight)
+| `am`    | transmission (0 = automatic, 1 = manual)
+| `gear` 	| number of forward gears
+| `carb` 	| number of carburetors
+
+# Exercises
+
+## Part 1: Exploratory Data Analysis
+
+```{marginfigure}
+
+**Hint:** 
+  
+histogram template code: data %>% ggplot(aes(x = xvar)) + 
+                                         geom_histogram()
+
+boxplot template code: data %>% ggplot(aes(y = yvar)) + 
+                                         geom_boxplot()
+
+summary stats template code (5-number summary + mean):       
+  data %>% summarize(min_xxx = min(var),
+                     Q1_xxx = quantile(var, 0.25),      
+                     median_xxx = median(var),
+                     mean_xxx = mean(var),
+                     Q3_xxx = quantile(var, 0.75),
+                     max_xxx = max(var))
+
+```
+
+1.  We want to build regression models to predict the fuel efficiency (mpg).  Visualize the distribution of `mpg`. 
+    Is the distribution skewed? Is this what you expected to
+    see? Why, or why not? Include any summary statistics and visualizations you use in your response.
+
+```{r echo=TRUE, eval=TRUE}
+mtcars %>% ggplot(aes(x = mpg)) + geom_histogram(bins = 12)
+mtcars %>% ggplot(aes(y = mpg)) + geom_boxplot()
+mtcars %>% summarize(min_mpg = min(mpg),
+                    Q1_mpg = quantile(mpg, 0.25),
+                    median_mpg = median(mpg),
+                    mean_mpg = mean(mpg),
+                    Q3_mpg = quantile(mpg, 0.75),
+                    max_mpg = max(mpg))
+```
+
+```{r}
+mtcars %>% ggplot(aes(x = wt)) + geom_histogram(bins = 12)
+mtcars %>% ggplot(aes(y =wt)) + geom_boxplot()
+mtcars %>% summarize(min_wt = min(wt),
+                    Q1_wt = quantile(wt, 0.25),
+                    median_wt = median(wt),
+                    mean_wt = mean(wt),
+                    Q3_wt = quantile(wt, 0.75),
+                    max_wt = max(wt))
+```
+
+The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, 75% of the cars have a `mpg` from 10-23 while only 25% have an `mpg` from 23-34.
+
+2.  Visualize and describe the relationship between `mpg` and the `wt` of the cars. Is this relationship linear? What is the direction of the relationship? Do there seem to be observations that do not seem to fit the general pattern of the others?
+
+```{marginfigure}
+**Hint:** data %>% ggplot(aes(x = xvar, y = yvar)) + geom_point()
+```
+
+```{r}
+mtcars %>% ggplot(aes(x = wt, y = mpg)) + geom_point()
+```
+
+
+3.  Calculate the *correlation coefficient* between `mpg` and `wt`. Discuss how this statistic relates to your comments for the questions above.
+
+```{marginfigure}
+**Hint:** data %>% get_correlation(response_var ~ predictor_var)
+```
+
+```{r}
+mtcars %>% get_correlation(mpg ~ wt)
+```
+
+The negative sign reflects the negative relationship between mpg and wt. The magnitude being close to 1 tells me that the relationship is pretty strong.
+
+## Part 3: Linear regression with a numerical predictor
+
+```{marginfigure}
+A prediction equation for a linear model is in the form $\hat{y} = b_0 + b_1 x$. This is an estimate to the population regression equation $y = \beta_0 + \beta_1 x + \epsilon$ 
+  
+*To fit a simple regression model:  
+model_xxx <- lm(response ~ predictor, data)
+get_regression_table(model_xxx)  # provides parameter estimates with confidence intervals
+get_regression_summaries(model_xxx)  # provides model fit summary
+```
+
+4.  Let's see if the apparent trend in the plot is something more than
+    natural variation. Fit a linear model called `model_mpg` to predict average
+    fuel efficiency `mpg` by the weight of the car (`wt`). Based on the
+    regression output, write the linear model.
+
+```{r}
+# model_mpg <- lm()
+
+```
+
+```{marginfigure}
+**Hint:** 
+  data %>% ggplot(aes(x = xvar, y = yvar)) + 
+                   geom_point() +
+                   geom_smooth(method = "lm", se = TRUE/FALSE, color = " ")
+```
+
+5.  Re-plot your visualization from Exercise 3, and add the regression line to this plot
+    in orange color. Turn off the shading for the uncertainty of the line.
+
+```{r}
+# mtcars %>% ggplot(aes(x = _, y = _)) + 
+#            geom_point() + 
+#            geom_smooth(___)
+```
+
+6.  Interpret the slope of the linear model in context of the data.
+
+    
+7. Does this model provide evidence of a statistically significant relationship between `mpg` and `wt`? 
+   Answer the question and explain how you are determining your answer.
+
+8. Find and interpret a confidence interval for the slope parameter.    
+
+9. Interpret the intercept of the linear model in context of the data. Comment on whether
+    or not the intercept makes sense in this context.
+
+10. Determine the $R^2$ of the model and interpret it in context of the data. 
+    Comment on which models are being compared by the $R^2$ value. Does this seem like a good model?
+
+```{r}
+#get_regression_summaries(model_mpg)
+```
+
+11. Consider the observation (car) weight approximately 5250 lbs and having a fuel efficiency close to 10 mpg. Classify this observation as: high/low leverage and high/low influence.
+
+12. Consider the observation (car) weight approximately 3750 lbs and having a fuel efficiency close to 17.5 mpg. Classify this observation as: high/low leverage and high/low influence.
+
+13. What is the 'danger' with influential observations when fitting regression models? Use the output of the code below to help answer the question above? (Remove `eval=FALSE` from the chunk below to compile)
+
+```{r eval=FALSE}
+Create new freak observation
+mtcars_extra_obs <- data_frame(mpg = 35,
+                               cyl = 8,
+                               disp = 400,
+                               hp = 300,
+                               drat = 3.9,
+                               wt = 5.25,
+                               qsec = 15,
+                               vs = 1,
+                               am = 1,
+                               gear = 4,
+                               carb = 9)
+
+# Add freak observation and run same model
+mtcars_extra <- bind_rows(mtcars, mtcars_extra_obs)
+model_mpg_extra <- lm(mpg ~ wt, mtcars_extra)
+get_regression_table(model_mpg_extra)
+mtcars_extra %>% ggplot(aes(x = wt, y = mpg)) +
+                 geom_point() +
+                 geom_smooth(method = 'lm',
+                             se = FALSE,
+                             color = 'orange')
+```
+
+
+Now, forget about the extra observation we added to the data set. Use `mtcars` to answer the following.
+
+14. What is a range of plausible values for the average `mpg` for cars weighing 3,500 lbs?
+
+```{r eval=FALSE}
+# Example code
+# new_obs <- data_frame(wt = #insert number)
+#                         
+# # use interval = 'confidence' for a confidence interval for the average response at a particular value of x             # use interval = 'prediction' for a prediction interval for response at a particular value of x              
+# predict(model_mpg, newdata = new_obs, interval = 'confidence')
+```
+```{r}
+# Example code
+# new_obs <- data_frame(wt = )
+# predict(model_mpg, newdata = new_obs, interval = )
+```
+
+15. What is a range of plausible values for the fuel efficiency `mpg` of a car weighing 4,000 lbs?
+
+```{r}
+
+```
+
+16. Discuss why the interval in question 14 is so much wider than the interval in question 13.
+
+
+## Part 4: Linear regression with a categorical predictor
+
+When fitting a regression model with a categorical predictor we need to make use of indicator functions.
+
+*Indicator functions* are a special function that are either 'On' (when the function is equal to one) or 'Off' (when the function is equal to zero). We use the bold-face $1_{\text{logical condition}}$ to indicate that we are using an indicator function. The appropriate mathematical definition is:
+
+\[
+1_{\text{Logical Condition}} =\begin{cases}
+                    1, \text{if Condition is TRUE}\\
+                    0, \text{if Condition is FALSE}\\
+                  \end{cases}
+\]
+
+Below, we are going to fit a regression model to predict the fuel efficiency `mpg` from the transmission type `am`. The population regression equation can be written as: $mpg = \beta_0 + \beta_1 1_{\text{manual}} + \epsilon$. The indicator function $1_{\text{manual}}$ evaluates to zero for automatic transmission cars and evaluates to one for manual transmission cars. 
+
+Thus, there are really 2 equations corresponding to manual and automatic transmission cars:
+
+For automatic transmissions we have: $mpg = \beta_0 + \beta_1 * 0 + \epsilon = \beta_0 + \epsilon$
+
+For manual transmissions we have: $mpg = \beta_0 + \beta_1 * 1 + \epsilon = (\beta_0 + \beta_1) + \epsilon$
+
+17.  Fit a new linear model called `model_vs` to predict average fuel efficiency `mpg`
+    based on `am` transmission type (manual or automatic).
+
+```{r}
+# mtcars <- mtcars %>% mutate(am = if_else(am == 1, "manual", "automatic"))
+# model_am <- lm(mpg ~ __, mtcars)
+# get_regression_table(__)
+```
+
+
+18. What is the equation of the line predicting fuel efficiency (in `mpg`) corresponding to manual transmission cars? Automatic transmission cars?
+
+19. Based on the regression output, interpret the slope (not a true slope) and intercept in context of the data.
+
+20. We have encountered situations previously where the intercept may not have a sensical interpretation. Why is the intercept in this model interpretable?
+
+21. Find and interpret a confidence interval for the 'slope' parameter.
+
+
+22. Below, the `predict()` function was used to obtain the intervals below. Interpret each interval. Be very clear about what the big difference is for each interval.
+```{r}
+# Example code
+# new_obs <- data_frame(am = 'automatic')
+# predict(model_am, newdata = new_obs, interval = 'confidence')
+# predict(model_am, newdata = new_obs, interval = 'prediction')
+```
+
+## Non-linear Relationships
+
+Consider the following two scatterplots. Which one seems to fit better?
+
+```{r}
+#mtcars %>% ggplot(aes(x = disp, y = mpg)) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
+#mtcars %>% ggplot(aes(x = disp, y = log(mpg))) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
+
+```
+
+
+23. Fit a linear model called `model_disp` to predict average log(fuel efficiency) `log(mpg)` by the displacement of the engine `disp`. Based on the regression output, write the fitted linear model.
+
+```{r}
+# model_disp <- lm(log(mpg) ~ disp, data = mtcars)
+# get_regression_table(___)
+```
+
+24. Interpret the slope coefficient in context.
+
+25. Transform your prediction equation so that is is not on the log scale.  (Hint: use exp() to when writing exponentials)
+
+```{marginfigure}
+In R, the exponential function is `exp()`
+Example: e^3 is exp(3)
+```
+
+26. What is a range of plausible values for the average  fuel efficiency of cars having 300 cubic inches of displacement `disp`? What is a range of plausible values for the fuel efficiency of a car having 300 cubic inches of displacement `disp`? (Hint: you need to transform you interval so that they are not on the log scale.)
+
+```{r eval=FALSE}
+# Example code
+# new_obs <- data_frame(disp = xxx)
+# predict(model_disp, newdata = new_obs, interval = xxx)
+
+
+```
