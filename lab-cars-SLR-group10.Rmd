@@ -186,7 +186,9 @@ mtcars %>% ggplot(aes(x = mpg, y = wt)) +
 ```
 
 6.  Interpret the slope of the linear model in context of the data.
-    
+
+**For every increase of 1 in `wt`, there is an associated decrease by 5.34 in `mpg`.**
+
 7. Does this model provide evidence of a statistically significant relationship between `mpg` and `wt`? 
    Answer the question and explain how you are determining your answer.
 
