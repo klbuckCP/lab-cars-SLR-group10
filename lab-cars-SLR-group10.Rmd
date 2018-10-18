@@ -180,7 +180,7 @@ get_regression_summaries(model_mpg)
     in orange color. Turn off the shading for the uncertainty of the line.
 
 ```{r}
-mtcars %>% ggplot(aes(x = mpg, y = wt)) + 
+mtcars %>% ggplot(aes(x = wt, y = mpg)) + 
             geom_point() + 
             geom_smooth(method = "lm", se = FALSE, color = "orange")
 ```
