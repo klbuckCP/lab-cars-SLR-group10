@@ -163,8 +163,11 @@ get_regression_summaries(model_xxx)  # provides model fit summary
 
 ```{r}
 model_mpg <- lm(mpg~wt, mtcars)
-
+get_regression_table(model_mpg)
+get_regression_summaries(model_mpg)
 ```
+
+**$\hat{mpg} = 37.3 + -5.34 wt$**
 
 ```{marginfigure}
 **Hint:** 
@@ -196,7 +199,7 @@ mtcars %>% ggplot(aes(x = mpg, y = wt)) +
     Comment on which models are being compared by the $R^2$ value. Does this seem like a good model?
 
 ```{r}
-#get_regression_summaries(model_mpg)
+get_regression_summaries(model_mpg)
 ```
 
 11. Consider the observation (car) weight approximately 5250 lbs and having a fuel efficiency close to 10 mpg. Classify this observation as: high/low leverage and high/low influence.
