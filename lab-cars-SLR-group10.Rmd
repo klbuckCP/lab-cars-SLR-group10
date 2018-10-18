@@ -1,7 +1,7 @@
 ---
 title: "Lab Cars, Pt 1"
 subtitle: "Single predictor"
-author: "Katie Buck Group 10"
+author: "Katie Buck, Mian Uddin, Alex Diosdado Group 10"
 date: "2018-10-16"
 output: 
   tufte::tufte_html:
