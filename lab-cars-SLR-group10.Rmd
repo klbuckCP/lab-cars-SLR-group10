@@ -264,23 +264,30 @@ Now, forget about the extra observation we added to the data set. Use `mtcars` t
 # Example code
 # new_obs <- data_frame(wt = #insert number)
 #                         
-# # use interval = 'confidence' for a confidence interval for the average response at a particular value of x             # use interval = 'prediction' for a prediction interval for response at a particular value of x              
+#
+# use interval = 'confidence' for a confidence interval for the average response at a particular value of x
+# use interval = 'prediction' for a prediction interval for response at a particular value of x              
 # predict(model_mpg, newdata = new_obs, interval = 'confidence')
 ```
 ```{r}
-# Example code
-# new_obs <- data_frame(wt = )
-# predict(model_mpg, newdata = new_obs, interval = )
+new_obs <- data_frame(wt = 3.5)
+predict(model_mpg, newdata = new_obs, interval = 'confidence')
 ```
+
+**The range of plausible values for the average `mpg` for cars weighing $3,500lbs$ is $[17, 20]$.**
 
 15. What is a range of plausible values for the fuel efficiency `mpg` of a car weighing 4,000 lbs?
 
 ```{r}
-
+new_obs <- data_frame(wt = 4)
+predict(model_mpg, newdata = new_obs, interval = 'prediction')
 ```
+
+**The range of plausible values for the fuel efficiency `mpg` of a car weighing $4,000lbs$ is $[9.5, 22]$.**
 
 16. Discuss why the interval in question 14 is so much wider than the interval in question 13.
 
+**The interval in question 14 is so much wider than the interval in question 13 because it is a prediction interval rather than a confidence interval. The latter is only concerned with where the "average" may be while the prediction interval is the range for any response at that particular value. The range of potential responses is much larger than the range of where the average may be.**
 
 ## Part 4: Linear regression with a categorical predictor
 

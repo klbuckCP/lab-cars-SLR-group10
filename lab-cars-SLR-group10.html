@@ -525,15 +525,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># Example code</span></a>
 <a class="sourceLine" id="cb24-2" data-line-number="2"><span class="co"># new_obs &lt;- data_frame(wt = #insert number)</span></a>
 <a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co">#                         </span></a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co"># # use interval = 'confidence' for a confidence interval for the average response at a particular value of x             # use interval = 'prediction' for a prediction interval for response at a particular value of x              </span></a>
-<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="co"># predict(model_mpg, newdata = new_obs, interval = 'confidence')</span></a></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># Example code</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="co"># new_obs &lt;- data_frame(wt = )</span></a>
-<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="co"># predict(model_mpg, newdata = new_obs, interval = )</span></a></code></pre></div>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co">#</span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="co"># use interval = 'confidence' for a confidence interval for the average response at a particular value of x</span></a>
+<a class="sourceLine" id="cb24-6" data-line-number="6"><span class="co"># use interval = 'prediction' for a prediction interval for response at a particular value of x              </span></a>
+<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="co"># predict(model_mpg, newdata = new_obs, interval = 'confidence')</span></a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">new_obs &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">wt =</span> <span class="fl">3.5</span>)</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">predict</span>(model_mpg, <span class="dt">newdata =</span> new_obs, <span class="dt">interval =</span> <span class="st">'confidence'</span>)</a></code></pre></div>
+<pre><code>##   fit lwr upr
+## 1  19  17  20</code></pre>
+<p><strong>The range of plausible values for the average <code>mpg</code> for cars weighing <span class="math inline">\(3,500lbs\)</span> is <span class="math inline">\([17, 20]\)</span>.</strong></p>
 <ol start="15" style="list-style-type: decimal">
-<li><p>What is a range of plausible values for the fuel efficiency <code>mpg</code> of a car weighing 4,000 lbs?</p></li>
-<li><p>Discuss why the interval in question 14 is so much wider than the interval in question 13.</p></li>
+<li>What is a range of plausible values for the fuel efficiency <code>mpg</code> of a car weighing 4,000 lbs?</li>
 </ol>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">new_obs &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">wt =</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">predict</span>(model_mpg, <span class="dt">newdata =</span> new_obs, <span class="dt">interval =</span> <span class="st">'prediction'</span>)</a></code></pre></div>
+<pre><code>##   fit lwr upr
+## 1  16 9.5  22</code></pre>
+<p><strong>The range of plausible values for the fuel efficiency <code>mpg</code> of a car weighing <span class="math inline">\(4,000lbs\)</span> is <span class="math inline">\([9.5, 22]\)</span>.</strong></p>
+<ol start="16" style="list-style-type: decimal">
+<li>Discuss why the interval in question 14 is so much wider than the interval in question 13.</li>
+</ol>
+<p><strong>The interval in question 14 is so much wider than the interval in question 13 because it is a prediction interval rather than a confidence interval. The latter is only concerned with where the “average” may be while the prediction interval is the range for any response at that particular value. The range of potential responses is much larger than the range of where the average may be.</strong></p>
 </div>
 <div id="part-4-linear-regression-with-a-categorical-predictor" class="section level2">
 <h2>Part 4: Linear regression with a categorical predictor</h2>
@@ -552,9 +564,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol start="17" style="list-style-type: decimal">
 <li>Fit a new linear model called <code>model_vs</code> to predict average fuel efficiency <code>mpg</code> based on <code>am</code> transmission type (manual or automatic).</li>
 </ol>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co"># mtcars &lt;- mtcars %&gt;% mutate(am = if_else(am == 1, &quot;manual&quot;, &quot;automatic&quot;))</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="co"># model_am &lt;- lm(mpg ~ __, mtcars)</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="co"># get_regression_table(__)</span></a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># mtcars &lt;- mtcars %&gt;% mutate(am = if_else(am == 1, &quot;manual&quot;, &quot;automatic&quot;))</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="co"># model_am &lt;- lm(mpg ~ __, mtcars)</span></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="co"># get_regression_table(__)</span></a></code></pre></div>
 <ol start="18" style="list-style-type: decimal">
 <li><p>What is the equation of the line predicting fuel efficiency (in <code>mpg</code>) corresponding to manual transmission cars? Automatic transmission cars?</p></li>
 <li><p>Based on the regression output, interpret the slope (not a true slope) and intercept in context of the data.</p></li>
@@ -562,21 +574,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Find and interpret a confidence interval for the ‘slope’ parameter.</p></li>
 <li><p>Below, the <code>predict()</code> function was used to obtain the intervals below. Interpret each interval. Be very clear about what the big difference is for each interval.</p></li>
 </ol>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># Example code</span></a>
-<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="co"># new_obs &lt;- data_frame(am = 'automatic')</span></a>
-<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="co"># predict(model_am, newdata = new_obs, interval = 'confidence')</span></a>
-<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="co"># predict(model_am, newdata = new_obs, interval = 'prediction')</span></a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># Example code</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="co"># new_obs &lt;- data_frame(am = 'automatic')</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="co"># predict(model_am, newdata = new_obs, interval = 'confidence')</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="co"># predict(model_am, newdata = new_obs, interval = 'prediction')</span></a></code></pre></div>
 </div>
 <div id="non-linear-relationships" class="section level2">
 <h2>Non-linear Relationships</h2>
 <p>Consider the following two scatterplots. Which one seems to fit better?</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co">#mtcars %&gt;% ggplot(aes(x = disp, y = mpg)) + geom_point() + geom_smooth(method = 'lm', se = FALSE)</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co">#mtcars %&gt;% ggplot(aes(x = disp, y = log(mpg))) + geom_point() + geom_smooth(method = 'lm', se = FALSE)</span></a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="co">#mtcars %&gt;% ggplot(aes(x = disp, y = mpg)) + geom_point() + geom_smooth(method = 'lm', se = FALSE)</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="co">#mtcars %&gt;% ggplot(aes(x = disp, y = log(mpg))) + geom_point() + geom_smooth(method = 'lm', se = FALSE)</span></a></code></pre></div>
 <ol start="23" style="list-style-type: decimal">
 <li>Fit a linear model called <code>model_disp</code> to predict average log(fuel efficiency) <code>log(mpg)</code> by the displacement of the engine <code>disp</code>. Based on the regression output, write the fitted linear model.</li>
 </ol>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># model_disp &lt;- lm(log(mpg) ~ disp, data = mtcars)</span></a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="co"># get_regression_table(___)</span></a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># model_disp &lt;- lm(log(mpg) ~ disp, data = mtcars)</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="co"># get_regression_table(___)</span></a></code></pre></div>
 <ol start="24" style="list-style-type: decimal">
 <li><p>Interpret the slope coefficient in context.</p></li>
 <li><p>Transform your prediction equation so that is is not on the log scale. (Hint: use exp() to when writing exponentials)</p></li>
@@ -585,9 +597,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol start="26" style="list-style-type: decimal">
 <li>What is a range of plausible values for the average fuel efficiency of cars having 300 cubic inches of displacement <code>disp</code>? What is a range of plausible values for the fuel efficiency of a car having 300 cubic inches of displacement <code>disp</code>? (Hint: you need to transform you interval so that they are not on the log scale.)</li>
 </ol>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># Example code</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="co"># new_obs &lt;- data_frame(disp = xxx)</span></a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="co"># predict(model_disp, newdata = new_obs, interval = xxx)</span></a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># Example code</span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># new_obs &lt;- data_frame(disp = xxx)</span></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="co"># predict(model_disp, newdata = new_obs, interval = xxx)</span></a></code></pre></div>
 </div>
 </div>
 
