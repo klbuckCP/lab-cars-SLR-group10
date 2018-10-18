@@ -116,7 +116,7 @@ mtcars %>% summarize(min_wt = min(wt),
                     mean_wt = mean(wt),
                     Q3_wt = quantile(wt, 0.75),
                     max_wt = max(wt))
-``
+```
 
 **The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, 75% of the cars have a `mpg` from 10-23 while only 25% have an `mpg` from 23-34.**
 
