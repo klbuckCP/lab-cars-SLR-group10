@@ -118,7 +118,7 @@ mtcars %>% summarize(min_wt = min(wt),
                     max_wt = max(wt))
 ```
 
-The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, 75% of the cars have a `mpg` from 10-23 while only 25% have an `mpg` from 23-34.
+**The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, 75% of the cars have a `mpg` from 10-23 while only 25% have an `mpg` from 23-34.**
 
 2.  Visualize and describe the relationship between `mpg` and the `wt` of the cars. Is this relationship linear? What is the direction of the relationship? Do there seem to be observations that do not seem to fit the general pattern of the others?
 
