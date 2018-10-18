@@ -116,8 +116,9 @@ mtcars %>% summarize(min_wt = min(wt),
                     mean_wt = mean(wt),
                     Q3_wt = quantile(wt, 0.75),
                     max_wt = max(wt))
-```
-The distribution is skewed to the right. 
+``
+
+**The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, 75% of the cars have a `mpg` from 10-23 while only 25% have an `mpg` from 23-34.**
 
 2.  Visualize and describe the relationship between `mpg` and the `wt` of the cars. Is this relationship linear? What is the direction of the relationship? Do there seem to be observations that do not seem to fit the general pattern of the others?
 
@@ -129,6 +130,7 @@ The distribution is skewed to the right.
 mtcars %>% ggplot(aes(x = mpg, y = wt)) + geom_point()
 ```
 
+**The relationship appears to be linear. The direction of the relationship is negative. There are three points which have a `wt` greater than 5 that do not seem to fit the general pattern of the others.**
 
 3.  Calculate the *correlation coefficient* between `mpg` and `wt`. Discuss how this statistic relates to your comments for the questions above.
 
