@@ -193,10 +193,12 @@ mtcars %>% ggplot(aes(x = wt, y = mpg)) +
    Answer the question and explain how you are determining your answer.
 
 8. Find and interpret a confidence interval for the slope parameter.    
+
 **With some degree of certainty, we can conclude that the true (population) slope is contained within the interval `[-6.49, -4.20]`.**
 
 9. Interpret the intercept of the linear model in context of the data. Comment on whether
     or not the intercept makes sense in this context.
+    
 **The intercept of the linear model conveys that the `mpg` is $37.3$ when the `wt` of the car is $0lbs$. In this context, that does not make much sense because there are no cars that weigh $0lbs$.**
 
 10. Determine the $R^2$ of the model and interpret it in context of the data. 
@@ -212,7 +214,19 @@ get_regression_summaries(model_mpg)
 
 11. Consider the observation (car) weight approximately 5250 lbs and having a fuel efficiency close to 10 mpg. Classify this observation as: high/low leverage and high/low influence.
 
+```{r}
+regression_points <- get_regression_points(model_mpg)
+ggplot(regression_points, aes(x = wt, y = residual)) +
+  geom_point() +
+  labs(x = "Weight", y = "Residual") +
+  geom_hline(yintercept = 0, col = "blue", size = 1)
+```
+
+**Based on this residual plot, it looks like this observation is low leverage because it is not very far from the center of the "cloud" of points and is not very influential as it does not fall unusually far from the line.**
+
 12. Consider the observation (car) weight approximately 3750 lbs and having a fuel efficiency close to 17.5 mpg. Classify this observation as: high/low leverage and high/low influence.
+
+**Based on the residual plot under #11, this observation is not horizontally far from the center nor is it unusually far from the line, leaving it both low leverage and influence.**
 
 13. What is the 'danger' with influential observations when fitting regression models? Use the output of the code below to help answer the question above? (Remove `eval=FALSE` from the chunk below to compile)
 
