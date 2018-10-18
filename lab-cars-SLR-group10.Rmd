@@ -206,6 +206,10 @@ mtcars %>% ggplot(aes(x = wt, y = mpg)) +
 get_regression_summaries(model_mpg)
 ```
 
+**The $R^2$ of the model is $0.753$ which means the strength of the linear fit is strong. With regards to comparison against other models, whether a given $R^2$ value is better than another is relative.**
+
+**TODO: "Comment on which models are being compared by the $R^2$ value. Does this seem like a good model?"**
+
 11. Consider the observation (car) weight approximately 5250 lbs and having a fuel efficiency close to 10 mpg. Classify this observation as: high/low leverage and high/low influence.
 
 12. Consider the observation (car) weight approximately 3750 lbs and having a fuel efficiency close to 17.5 mpg. Classify this observation as: high/low leverage and high/low influence.
