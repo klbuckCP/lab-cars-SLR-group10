@@ -130,6 +130,7 @@ mtcars %>% summarize(min_wt = min(wt),
 mtcars %>% ggplot(aes(x = wt, y = mpg)) + geom_point()
 ```
 
+**The relationship appears to be linear. The direction of the relationship is negative. There are three points which have a `wt` greater than 5 that do not seem to fit the general pattern of the others.**
 
 3.  Calculate the *correlation coefficient* between `mpg` and `wt`. Discuss how this statistic relates to your comments for the questions above.
 
