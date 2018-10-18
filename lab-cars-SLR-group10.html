@@ -463,8 +463,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol start="7" style="list-style-type: decimal">
 <li><p>Does this model provide evidence of a statistically significant relationship between <code>mpg</code> and <code>wt</code>? Answer the question and explain how you are determining your answer.</p></li>
 <li><p>Find and interpret a confidence interval for the slope parameter.<br />
-<strong>With some degree of certainty, we can conclude that the true (population) slope is contained within the interval <code>[-6.49, -4.20].</code></strong></p></li>
-<li><p>Interpret the intercept of the linear model in context of the data. Comment on whether or not the intercept makes sense in this context.</p></li>
+<strong>With some degree of certainty, we can conclude that the true (population) slope is contained within the interval <code>[-6.49, -4.20]</code>.</strong></p></li>
+<li><p>Interpret the intercept of the linear model in context of the data. Comment on whether or not the intercept makes sense in this context. <strong>The intercept of the linear model conveys that the <code>mpg</code> is <span class="math inline">\(37.3\)</span> when the <code>wt</code> of the car is <span class="math inline">\(0 lbs\)</span>. In this context, that does not make much sense because there are no cars that weigh <span class="math inline">\(0lbs\)</span>.</strong></p></li>
 <li><p>Determine the <span class="math inline">\(R^2\)</span> of the model and interpret it in context of the data. Comment on which models are being compared by the <span class="math inline">\(R^2\)</span> value. Does this seem like a good model?</p></li>
 </ol>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">get_regression_summaries</span>(model_mpg)</a></code></pre></div>
