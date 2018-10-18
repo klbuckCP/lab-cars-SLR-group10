@@ -141,8 +141,9 @@ mtcars %>% ggplot(aes(x = mpg, y = wt)) + geom_point()
 ```{r}
 mtcars %>% get_correlation(mpg~wt)
 ```
-The negative sign reflects the negative relationship between mpg and wt.
-The magnitude being close to 1 tells me that the relationship is strong.
+
+**The negative sign reflects the negative relationship between mpg and wt.
+The magnitude being close to 1 tells me that the relationship is strong.**
 
 ## Part 3: Linear regression with a numerical predictor
 
