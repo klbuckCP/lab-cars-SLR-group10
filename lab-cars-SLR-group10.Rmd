@@ -118,7 +118,7 @@ mtcars %>% summarize(min_wt = min(wt),
                     max_wt = max(wt))
 ```
 
-**The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, 75% of the cars have a `mpg` from 10-23 while only 25% have an `mpg` from 23-34.**
+**The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, $75%$ of the cars have a `mpg` from $10-23$ while only $25%$ have an `mpg` from $23-34$.**
 
 2.  Visualize and describe the relationship between `mpg` and the `wt` of the cars. Is this relationship linear? What is the direction of the relationship? Do there seem to be observations that do not seem to fit the general pattern of the others?
 
@@ -127,7 +127,7 @@ mtcars %>% summarize(min_wt = min(wt),
 ```
 
 ```{r}
-mtcars %>% ggplot(aes(x = mpg, y = wt)) + geom_point()
+mtcars %>% ggplot(aes(x = wt, y = mpg)) + geom_point()
 ```
 
 **The relationship appears to be linear. The direction of the relationship is negative. There are three points which have a `wt` greater than 5 that do not seem to fit the general pattern of the others.**
@@ -142,8 +142,8 @@ mtcars %>% ggplot(aes(x = mpg, y = wt)) + geom_point()
 mtcars %>% get_correlation(mpg~wt)
 ```
 
-**The negative sign reflects the negative relationship between mpg and wt.
-The magnitude being close to 1 tells me that the relationship is strong.**
+**The negative sign reflects the negative relationship between `mpg` and `wt`.
+The magnitude being close to $1$ tells me that the relationship is strong.**
 
 ## Part 3: Linear regression with a numerical predictor
 
@@ -187,14 +187,14 @@ mtcars %>% ggplot(aes(x = wt, y = mpg)) +
 
 6.  Interpret the slope of the linear model in context of the data.
 
-**For every increase of 1 in `wt`, there is an associated decrease by 5.34 in `mpg`.**
+**For every increase of $1$ in `wt`, there is an associated decrease of $5.34$ in `mpg`.**
 
 7. Does this model provide evidence of a statistically significant relationship between `mpg` and `wt`? 
    Answer the question and explain how you are determining your answer.
 
 8. Find and interpret a confidence interval for the slope parameter.    
 
-**With some degree of certainty, we can conclude that the true (population) slope is contained within the interval `[-6.49, -4.20]`.**
+**With some degree of certainty, we can conclude that the true (population) slope is contained within the interval $[-6.49, -4.20]$.**
 
 9. Interpret the intercept of the linear model in context of the data. Comment on whether
     or not the intercept makes sense in this context.
