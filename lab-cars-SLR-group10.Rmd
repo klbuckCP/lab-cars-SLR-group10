@@ -1,8 +1,8 @@
 ---
 title: "Lab Cars, Pt 1"
 subtitle: "Single predictor"
-author: "Mian Uddin"
-date: "2018-02-22"
+author: "Katie Buck Group 10"
+date: "2018-10-16"
 output: 
   tufte::tufte_html:
     tufte_variant: "envisioned"
@@ -116,7 +116,7 @@ mtcars %>% summarize(min_wt = min(wt),
                     mean_wt = mean(wt),
                     Q3_wt = quantile(wt, 0.75),
                     max_wt = max(wt))
-```
+``
 
 **The distributions of `mpg` is skewed to the right. This is expected because most cars have decent performance while a small number have really good `mpg`. As seen in the boxplot, 75% of the cars have a `mpg` from 10-23 while only 25% have an `mpg` from 23-34.**
 
@@ -127,7 +127,7 @@ mtcars %>% summarize(min_wt = min(wt),
 ```
 
 ```{r}
-mtcars %>% ggplot(aes(x = wt, y = mpg)) + geom_point()
+mtcars %>% ggplot(aes(x = mpg, y = wt)) + geom_point()
 ```
 
 **The relationship appears to be linear. The direction of the relationship is negative. There are three points which have a `wt` greater than 5 that do not seem to fit the general pattern of the others.**
@@ -139,10 +139,10 @@ mtcars %>% ggplot(aes(x = wt, y = mpg)) + geom_point()
 ```
 
 ```{r}
-mtcars %>% get_correlation(mpg ~ wt)
+mtcars %>% get_correlation(mpg~wt)
 ```
-
-The negative sign reflects the negative relationship between mpg and wt. The magnitude being close to 1 tells me that the relationship is pretty strong.
+The negative sign reflects the negative relationship between mpg and wt.
+The magnitude being close to 1 tells me that the relationship is strong.
 
 ## Part 3: Linear regression with a numerical predictor
 
@@ -161,7 +161,7 @@ get_regression_summaries(model_xxx)  # provides model fit summary
     regression output, write the linear model.
 
 ```{r}
-# model_mpg <- lm()
+model_mpg <- lm(mpg~wt, mtcars)
 
 ```
 
@@ -176,13 +176,12 @@ get_regression_summaries(model_xxx)  # provides model fit summary
     in orange color. Turn off the shading for the uncertainty of the line.
 
 ```{r}
-# mtcars %>% ggplot(aes(x = _, y = _)) + 
-#            geom_point() + 
-#            geom_smooth(___)
+mtcars %>% ggplot(aes(x = mpg, y = wt)) + 
+            geom_point() + 
+            geom_smooth(method = "lm", se = FALSE, color = "orange")
 ```
 
 6.  Interpret the slope of the linear model in context of the data.
-
     
 7. Does this model provide evidence of a statistically significant relationship between `mpg` and `wt`? 
    Answer the question and explain how you are determining your answer.
