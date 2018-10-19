@@ -230,8 +230,8 @@ ggplot(regression_points, aes(x = wt, y = residual)) +
 
 13. What is the 'danger' with influential observations when fitting regression models? Use the output of the code below to help answer the question above? (Remove `eval=FALSE` from the chunk below to compile)
 
-```{r eval=FALSE}
 Create new freak observation
+```{r}
 mtcars_extra_obs <- data_frame(mpg = 35,
                                cyl = 8,
                                disp = 400,
@@ -254,7 +254,8 @@ mtcars_extra %>% ggplot(aes(x = wt, y = mpg)) +
                              se = FALSE,
                              color = 'orange')
 ```
-
+**Based on this plotted graph, the regression line has a less steep slope than we would expect.
+The influential points skew the slope of the regression line, so it does not fit as well to our data.**
 
 Now, forget about the extra observation we added to the data set. Use `mtcars` to answer the following.
 
