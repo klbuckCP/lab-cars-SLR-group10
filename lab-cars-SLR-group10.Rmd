@@ -343,20 +343,24 @@ For manual transmissions we have: $mpg = \beta_0 + \beta_1 * 1 + \epsilon = (\be
 Consider the following two scatterplots. Which one seems to fit better?
 
 ```{r}
-#mtcars %>% ggplot(aes(x = disp, y = mpg)) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
-#mtcars %>% ggplot(aes(x = disp, y = log(mpg))) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
-
+mtcars %>% ggplot(aes(x = disp, y = mpg)) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
+mtcars %>% ggplot(aes(x = disp, y = log(mpg))) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
 ```
 
+**The latter plot seems to fit more of the points better than the former.**
 
 23. Fit a linear model called `model_disp` to predict average log(fuel efficiency) `log(mpg)` by the displacement of the engine `disp`. Based on the regression output, write the fitted linear model.
 
 ```{r}
-# model_disp <- lm(log(mpg) ~ disp, data = mtcars)
-# get_regression_table(___)
+model_disp <- lm(log(mpg) ~ disp, data = mtcars)
+get_regression_table(model_disp)
 ```
 
+**$\hat{log(mpg)} = 3.446 + -0.002 disp$**
+
 24. Interpret the slope coefficient in context.
+
+**For every increase of `log(mpg)` by $1$, the `disp` of the engine goes down by $-0.002$.**
 
 25. Transform your prediction equation so that is is not on the log scale.  (Hint: use exp() to when writing exponentials)
 
@@ -365,12 +369,30 @@ In R, the exponential function is `exp()`
 Example: e^3 is exp(3)
 ```
 
-26. What is a range of plausible values for the average  fuel efficiency of cars having 300 cubic inches of displacement `disp`? What is a range of plausible values for the fuel efficiency of a car having 300 cubic inches of displacement `disp`? (Hint: you need to transform you interval so that they are not on the log scale.)
+```{r}
+# new intercept
+exp(3.446)
 
-```{r eval=FALSE}
-# Example code
-# new_obs <- data_frame(disp = xxx)
-# predict(model_disp, newdata = new_obs, interval = xxx)
+# new slope
+exp(0.002)
+```
 
+**$\hat{log(mpg)} = 31 + -disp$**
 
+26. What is a range of plausible values for the average fuel efficiency of cars having 300 cubic inches of displacement `disp`? What is a range of plausible values for the fuel efficiency of a car having 300 cubic inches of displacement `disp`? (Hint: you need to transform you interval so that they are not on the log scale.)
+
+```{r}
+new_obs <- data_frame(disp = 300)
+conf <- predict(model_disp, newdata = new_obs, interval = 'confidence')
+pred <- predict(model_disp, newdata = new_obs, interval = 'prediction')
+```
+
+**The range of plausible values for the average fuel efficiency of cars having $300$ cubic inches of displacement `disp` is:**
+```{r}
+sprintf("[%s, %s]", round(exp(conf[2]), 2), round(exp(conf[3]), 2))
+```
+
+**The range of plausible values for the fuel efficiency of cars having $300$ cubic inches of displacement `disp` is:**
+```{r}
+sprintf("[%s, %s]", round(exp(pred[2]), 2), round(exp(pred[3]), 2))
 ```
