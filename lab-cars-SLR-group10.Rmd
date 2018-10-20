@@ -315,9 +315,9 @@ For manual transmissions we have: $mpg = \beta_0 + \beta_1 * 1 + \epsilon = (\be
     based on `am` transmission type (manual or automatic).
 
 ```{r}
-# mtcars <- mtcars %>% mutate(am = if_else(am == 1, "manual", "automatic"))
-# model_am <- lm(mpg ~ __, mtcars)
-# get_regression_table(__)
+mtcars <- mtcars %>% mutate(am = if_else(am == 1, "manual", "automatic"))
+model_am <- lm(mpg ~ am, mtcars)
+get_regression_table(model_am)
 ```
 
 
