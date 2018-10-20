@@ -191,6 +191,8 @@ mtcars %>% ggplot(aes(x = wt, y = mpg)) +
 
 7. Does this model provide evidence of a statistically significant relationship between `mpg` and `wt`? 
    Answer the question and explain how you are determining your answer.
+   
+**Yes, the slope of 5.34 shows that we can use x to predict y, and y is dependent on x.**
 
 8. Find and interpret a confidence interval for the slope parameter.    
 
@@ -320,23 +322,36 @@ model_am <- lm(mpg ~ am, mtcars)
 get_regression_table(model_am)
 ```
 
-
 18. What is the equation of the line predicting fuel efficiency (in `mpg`) corresponding to manual transmission cars? Automatic transmission cars?
+
+**mpg_hat = 15.2 + 7.24(wt) + 1.12   (I am not really sure about this)**
 
 19. Based on the regression output, interpret the slope (not a true slope) and intercept in context of the data.
 
+**Slope: 7.24 is telling us that for every value of automatic, the manual mpg will be approximately 7.24 mpg higher.
+Intercept: 17.1 tells us that the minimum mpg for a car is 17.1mpg.**
+
 20. We have encountered situations previously where the intercept may not have a sensical interpretation. Why is the intercept in this model interpretable?
+
+**The intercept in this model is interpretable, because miles per gallon is
+calculated based off of a vehicles weight and other attributes.**
 
 21. Find and interpret a confidence interval for the 'slope' parameter.
 
+**A confidence interval for slope is (3.64, 10.8). This interval represents the values
+that we whink B1 might be based on our data. We are confident that the true slope
+lies within this interval.**
 
 22. Below, the `predict()` function was used to obtain the intervals below. Interpret each interval. Be very clear about what the big difference is for each interval.
 ```{r}
 # Example code
-# new_obs <- data_frame(am = 'automatic')
-# predict(model_am, newdata = new_obs, interval = 'confidence')
-# predict(model_am, newdata = new_obs, interval = 'prediction')
+new_obs <- data_frame(am = 'automatic')
+predict(model_am, newdata = new_obs, interval = 'confidence')
+predict(model_am, newdata = new_obs, interval = 'prediction')
 ```
+
+The confidence interval is (15, 19). We are fairly certain that this interval captures the true mean.
+The prediction interval is (6.9, 27). This interval will contain a future observation a certain percentage of the time.
 
 ## Non-linear Relationships
 
