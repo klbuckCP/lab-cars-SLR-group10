@@ -594,8 +594,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <p><strong>The intercept in this model is interpretable, because miles per gallon is calculated based off of a vehicles weight and other attributes.</strong></p>
 <ol start="21" style="list-style-type: decimal">
-<li><p>Find and interpret a confidence interval for the ‘slope’ parameter.</p></li>
-<li><p>Below, the <code>predict()</code> function was used to obtain the intervals below. Interpret each interval. Be very clear about what the big difference is for each interval.</p></li>
+<li>Find and interpret a confidence interval for the ‘slope’ parameter.</li>
+</ol>
+<p><strong>A confidence interval for slope is (3.64, 10.8). This interval represents the values that we whink B1 might be based on our data. We are confident that the true slope lies within this interval.</strong></p>
+<ol start="22" style="list-style-type: decimal">
+<li>Below, the <code>predict()</code> function was used to obtain the intervals below. Interpret each interval. Be very clear about what the big difference is for each interval.</li>
 </ol>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># Example code</span></a>
 <a class="sourceLine" id="cb33-2" data-line-number="2">new_obs &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">am =</span> <span class="st">'automatic'</span>)</a>
@@ -605,6 +608,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">predict</span>(model_am, <span class="dt">newdata =</span> new_obs, <span class="dt">interval =</span> <span class="st">'prediction'</span>)</a></code></pre></div>
 <pre><code>##   fit lwr upr
 ## 1  17 6.9  27</code></pre>
+<p>The confidence interval is (15, 19). We are fairly certain that this interval captures the true mean. The prediction interval is (6.9, 27). This interval will contain a future observation a certain percentage of the time.</p>
 </div>
 <div id="non-linear-relationships" class="section level2">
 <h2>Non-linear Relationships</h2>
